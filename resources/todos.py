@@ -70,15 +70,12 @@ class Todo(Resource):
     def put(self, id):
         args = self.reqparse.parse_args()
         try:
-            todo = models.Todo.select().where(
-                models.Todo.id==id
-            ).get()
+            todo = models.Todo.get(models.Todo.id==id)
         except models.Todo.DoesNotExist:
             return make_response(json.dumps(
                     {'error': 'That review does not exist or is not editable'}
                 ), 403)
-        query = todo.update(**args)
-        query.execute()
+        todo.update(**args).where(models.Todo.id == id).execute()
         todo = todo_or_404(id)
         return (todo, 200, {
                 'Location': url_for('resources.todos.todo', id=id)
