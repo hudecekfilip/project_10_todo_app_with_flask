@@ -1,5 +1,7 @@
 aniso8601==3.0.2
 argon2==0.1.10
+argon2-cffi==18.3.0
+cffi==1.11.5
 Click==7.0
 coverage==4.5.1
 Flask==1.0.2
@@ -9,6 +11,7 @@ itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
 peewee==3.7.1
+pycparser==2.19
 pytz==2018.5
 six==1.11.0
 Werkzeug==0.14.1

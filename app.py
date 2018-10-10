@@ -1,14 +1,11 @@
-from flask import Flask, g, jsonify, render_template
+from flask import Flask, render_template
 
-from auth import auth
-from resources.users import users_api
 from resources.todos import todos_api
 
 import config
 import models
 
 app = Flask(__name__)
-app.register_blueprint(users_api)
 app.register_blueprint(todos_api)
 
 
