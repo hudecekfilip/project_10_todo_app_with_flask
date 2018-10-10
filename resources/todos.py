@@ -63,6 +63,7 @@ class Todo(Resource):
 
     @marshal_with(todo_fields)
     def get(self, id):
+        print("ID:".format(id))
         return todo_or_404(id)
 
     @marshal_with(todo_fields)
@@ -83,17 +84,15 @@ class Todo(Resource):
                 'Location': url_for('resources.todos.todo', id=id)
                })
 
+    @marshal_with(todo_fields)
     def delete(self, id):
         try:
-            todo = models.Todo.select().where(
-                models.Todo.id==id
-            ).get()
+            todo = models.Todo.get(models.Todo.id==id)
         except models.Todo.DoesNotExist:
             return make_response(json.dumps(
                     {'error': 'That review does not exist or is not editable'}
                 ), 403)
-        query = todo.delete()
-        query.execute()
+        todo.delete_instance()
         return '', 204, {'Location': url_for('resources.todos.todos')}
 
 
