@@ -63,7 +63,6 @@ class Todo(Resource):
 
     @marshal_with(todo_fields)
     def get(self, id):
-        print("ID:".format(id))
         return todo_or_404(id)
 
     @marshal_with(todo_fields)
