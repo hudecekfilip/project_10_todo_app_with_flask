@@ -6,6 +6,7 @@ import config
 
 DATABASE = SqliteDatabase('todos.sqlite')
 
+
 class Todo(Model):
     name = CharField()
     created_at = DateTimeField(default=datetime.datetime.now)
