@@ -33,20 +33,18 @@ class TodoList(Resource):
         )
         super().__init__()
 
-    @staticmethod
-    def get():
+    def get(self):
         todos = [marshal(todo, todo_fields)
                  for todo in models.Todo.select()]
-        return {'todos': todos}
+        return todos
 
     @marshal_with(todo_fields)
     def post(self):
         args = self.reqparse.parse_args()
         todo = models.Todo.create(**args)
-        return (todo,
-                201,
-                {'Location': url_for('resources.todos.todo', id=todo.id)}
-                )
+        return (todo, 201,
+            {'Location': url_for('resources.todos.todo', id=todo.id)}
+        )
 
 
 class Todo(Resource):
@@ -67,17 +65,13 @@ class Todo(Resource):
     @marshal_with(todo_fields)
     def put(self, id):
         args = self.reqparse.parse_args()
-        try:
-            todo = models.Todo.get(models.Todo.id==id)
-        except models.Todo.DoesNotExist:
-            return make_response(json.dumps(
-                    {'error': 'That review does not exist or is not editable'}
-                ), 403)
-        todo.update(**args).where(models.Todo.id == id).execute()
-        todo = todo_or_404(id)
-        return (todo, 200, {
-                'Location': url_for('resources.todos.todo', id=id)
-               })
+        print(args)
+        query = models.Todo.update(**args).where(models.Todo.id==id)
+        print(query)
+        query.execute()
+        return (models.Todo.get(models.Todo.id==id), 200,
+            {'Location': url_for('resources.todos.todo', id=id)}
+        )
 
     @marshal_with(todo_fields)
     def delete(self, id):
