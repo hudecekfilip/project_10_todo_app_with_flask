@@ -2,11 +2,9 @@ import json
 from flask import jsonify, Blueprint, abort, make_response
 
 from flask_restful import (Api, fields, reqparse,
-                        marshal, marshal_with, Resource, url_for)
-
+                           marshal, marshal_with, Resource, url_for)
 
 import models
-
 
 todo_fields = {
     'id': fields.Integer,
@@ -14,9 +12,10 @@ todo_fields = {
     'created_at': fields.DateTime
 }
 
+
 def todo_or_404(id):
     try:
-        todo = models.Todo.get(models.Todo.id==id)
+        todo = models.Todo.get(models.Todo.id == id)
     except models.Todo.DoesNotExist:
         abort(404)
     else:
@@ -34,10 +33,9 @@ class TodoList(Resource):
         )
         super().__init__()
 
-
     def get(self):
         todos = [marshal(todo, todo_fields)
-                    for todo in models.Todo.select()]
+                 for todo in models.Todo.select()]
         return {'todos': todos}
 
     @marshal_with(todo_fields)
