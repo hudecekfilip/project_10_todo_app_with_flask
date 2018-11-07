@@ -33,7 +33,8 @@ class TodoList(Resource):
         )
         super().__init__()
 
-    def get(self):
+    @staticmethod
+    def get():
         todos = [marshal(todo, todo_fields)
                  for todo in models.Todo.select()]
         return {'todos': todos}
