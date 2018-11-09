@@ -1,5 +1,4 @@
 import unittest
-from peewee import *
 from datetime import datetime
 
 from app import app
