@@ -3,7 +3,7 @@ from peewee import *
 from datetime import datetime
 
 from app import app
-import models
+from models import Todo
 
 
 class ViewTests(unittest.TestCase):
@@ -17,7 +17,7 @@ class ViewTests(unittest.TestCase):
 class TodoModel(unittest.TestCase):
     def test_todo_model(self):
         dt = datetime(2000, 1, 1, 0, 0)
-        models.Todo.create(name='RANDOM', created_at='2000-01-01')
+        Todo.create(name='RANDOM', created_at='2000-01-01')
         self.assertEqual(Todo.get(Todo.name == 'RANDOM').name, 'RANDOM')
         self.assertEqual(Todo.get(Todo.created_at == '2000-01-01').created_at, dt)
 
@@ -26,7 +26,7 @@ class TodoClass(unittest.TestCase):
     def test_get_todo_list(self):
         app.config['TESTING'] = True
         self.app = app.test_client()
-        models.Todo.create(name='TODO')
+        Todo.create(name='TODO')
         listview = self.app.get('/api/v1/todos')
         self.assertEqual(listview.status_code, 200)
 
