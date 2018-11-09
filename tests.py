@@ -13,6 +13,12 @@ class ViewTests(unittest.TestCase):
         homeview = self.app.get('/')
         self.assertEqual(homeview.status_code, 200)
 
+    def test_todos_page(self):
+        app.config['TESTING'] = True
+        self.app = app.test_client()
+        todos_view = self.app.get('/api/v1/todos')
+        self.assertEqual(todos_view.status_code, 200)
+
 
 class TodoModel(unittest.TestCase):
     def test_todo_model(self):
@@ -29,6 +35,7 @@ class TodoClass(unittest.TestCase):
         Todo.create(name='TODO')
         listview = self.app.get('/api/v1/todos')
         self.assertEqual(listview.status_code, 200)
+        self.assertEqual(Todo.get(Todo.name == 'TODO').name, 'TODO')
 
     def test_delete(self):
         app.config['TESTING'] = True
