@@ -65,9 +65,7 @@ class Todo(Resource):
     @marshal_with(todo_fields)
     def put(self, id):
         args = self.reqparse.parse_args()
-        print(args)
         query = models.Todo.update(**args).where(models.Todo.id==id)
-        print(query)
         query.execute()
         return (models.Todo.get(models.Todo.id==id), 200,
             {'Location': url_for('resources.todos.todo', id=id)}
