@@ -6,6 +6,9 @@ from flask_restful import (Api, fields, reqparse,
 
 import models
 
+"""
+configuring fields
+"""
 todo_fields = {
     'id': fields.Integer,
     'name': fields.String,
@@ -34,12 +37,14 @@ class TodoList(Resource):
         super().__init__()
 
     def get(self):
+        """Get todos"""
         todos = [marshal(todo, todo_fields)
                  for todo in models.Todo.select()]
         return todos
 
     @marshal_with(todo_fields)
     def post(self):
+        """Create todo"""
         args = self.reqparse.parse_args()
         todo = models.Todo.create(**args)
         return (todo, 201,
@@ -60,10 +65,12 @@ class Todo(Resource):
 
     @marshal_with(todo_fields)
     def get(self, id):
+        """Get single todo"""
         return todo_or_404(id)
 
     @marshal_with(todo_fields)
     def put(self, id):
+        """Update todo"""
         args = self.reqparse.parse_args()
         query = models.Todo.update(**args).where(models.Todo.id==id)
         query.execute()
@@ -73,6 +80,7 @@ class Todo(Resource):
 
     @marshal_with(todo_fields)
     def delete(self, id):
+        """Delete todo"""
         try:
             todo = models.Todo.get(models.Todo.id==id)
         except models.Todo.DoesNotExist:
